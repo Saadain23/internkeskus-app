@@ -8,7 +8,7 @@ class UserRole(str, Enum):
     ADMIN = "admin"
 
 class User(BaseModel):
-    id: ObjectId = Field(alias='_id')
+    id: ObjectId = Field(default_factory=ObjectId, alias='_id')
     email: str
     hashed_password: str
     is_active: bool = False

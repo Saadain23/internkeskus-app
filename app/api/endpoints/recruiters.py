@@ -28,13 +28,13 @@ async def get_my_profile(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="Profile not found")
     return profile
 
-@router.post("/me/profile", response_model=RecruiterProfileOut)
+@router.post("/me/create-update-profile", response_model=RecruiterProfileOut)
 async def create_update_my_profile(
     profile_data: RecruiterProfileCreate,
     current_user: User = Depends(get_current_user),
 ):
     if current_user.role != UserRole.RECRUITER:
         raise HTTPException(status_code=403, detail="Not authorized")
-    profile = await create_or_update_recruiter_profile(current_user.id, profile_data.dict())
+    profile = await create_or_update_recruiter_profile(current_user.id, profile_data)
     return profile
 

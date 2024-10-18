@@ -7,7 +7,7 @@ class RecruiterProfile(BaseModel):
     user_id: str
     first_name: str
     last_name: str
-    email: str
+    company_email: str
     phone_number: Optional[str] = None
     profile_picture_url: Optional[HttpUrl] = None
     position: Optional[str] = None
