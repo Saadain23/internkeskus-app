@@ -66,7 +66,7 @@ async def upload_resume(
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
     
-    profile.resume_file_name = file_name
+    profile["resume_url"] = file_name
     updated_profile = await create_or_update_student_profile(current_user.id, profile)
     
     return {"message": "Resume uploaded successfully"}
@@ -91,7 +91,7 @@ async def upload_profile_picture(
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
     
-    profile.profile_picture_file_name = file_name
+    profile["profile_picture_url"] = file_name
     updated_profile = await create_or_update_student_profile(current_user.id, profile)
     
     return {"message": "Profile picture uploaded successfully"}
@@ -102,10 +102,10 @@ async def get_resume(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Not authorized")
     
     profile = await get_student_profile(current_user.id)
-    if not profile or not profile.resume_file_name:
+    if not profile or not profile["resume_url"]:
         raise HTTPException(status_code=404, detail="Resume not found")
     
-    resume_url = await get_file_url(profile.resume_file_name)
+    resume_url = await get_file_url(profile["resume_url"])
     return RedirectResponse(url=resume_url)
 
 @router.get("/me/profile-picture")
@@ -114,8 +114,8 @@ async def get_profile_picture(current_user: User = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Not authorized")
     
     profile = await get_student_profile(current_user.id)
-    if not profile or not profile.profile_picture_file_name:
+    if not profile or not profile["profile_picture_url"]:
         raise HTTPException(status_code=404, detail="Profile picture not found")
     
-    profile_picture_url = await get_file_url(profile.profile_picture_file_name)
+    profile_picture_url = await get_file_url(profile["profile_picture_url"])
     return RedirectResponse(url=profile_picture_url)

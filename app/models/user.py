@@ -11,7 +11,7 @@ class User(BaseModel):
     id: ObjectId = Field(default_factory=ObjectId, alias='_id')
     email: str
     hashed_password: str
-    is_active: bool = False
+    is_active: bool = True
     role: UserRole
 
     class Config:

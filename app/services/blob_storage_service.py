@@ -12,7 +12,7 @@ account_key = settings.AZURE_STORAGE_ACCOUNT_KEY
 
 blob_service_client = BlobServiceClient.from_connection_string(connection_string)
 
-def upload_file_to_blob(file_name: str, file_content: bytes, content_type: str) -> str:
+async def upload_file_to_blob(file_name: str, file_content: bytes, content_type: str) -> str:
     try:
         container_client = blob_service_client.get_container_client(container_name)
         blob_client = container_client.get_blob_client(file_name)
@@ -21,7 +21,7 @@ def upload_file_to_blob(file_name: str, file_content: bytes, content_type: str) 
     except ResourceExistsError:
         return blob_client.url
 
-def delete_file_from_blob(file_name: str):
+async def delete_file_from_blob(file_name: str):
     try:
         container_client = blob_service_client.get_container_client(container_name)
         blob_client = container_client.get_blob_client(file_name)

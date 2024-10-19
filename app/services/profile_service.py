@@ -5,6 +5,7 @@ from app.models.student_profile import StudentProfile
 from app.models.recruiter_profile import RecruiterProfile
 from app.db.mongodb import db
 from app.core.config import settings
+from app.schemas.student_profile import StudentProfileCreate
 
 db_name = settings.PROJECT_NAME
 
@@ -70,7 +71,8 @@ async def get_recruiter_profile_by_id(recruiter_id: str):
     profile = await db.client[db_name].recruiter_profiles.find_one({"user_id": recruiter_id})
     return profile
 
-async def create_or_update_student_profile(user_id: str, profile_data: dict):
+async def create_or_update_student_profile(user_id: str, profile_data: StudentProfileCreate):
+
     await db.client[db_name].student_profiles.update_one(
         {"user_id": user_id},
         {"$set": profile_data},

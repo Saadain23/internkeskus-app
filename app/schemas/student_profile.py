@@ -1,7 +1,10 @@
 # app/schemas/student_profile.py
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, Field
 from typing import List, Optional
+from bson import ObjectId
+
+from app.models.student_profile import PyObjectId
 
 class Education(BaseModel):
     university: str
@@ -26,8 +29,8 @@ class StudentProfileBase(BaseModel):
     last_name: str
     email: str
     phone_number: Optional[str] = None
-    profile_picture_url: Optional[HttpUrl] = None
-    resume_url: Optional[HttpUrl] = None
+    profile_picture_url: Optional[str] = None
+    resume_url: Optional[str] = None
     education: List[Education]
     skills: Optional[List[str]] = None
     experience: Optional[List[Experience]] = None
@@ -38,7 +41,11 @@ class StudentProfileCreate(StudentProfileBase):
     pass
 
 class StudentProfileOut(StudentProfileBase):
-    user_id: str
+    user_id: PyObjectId
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        allow_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        

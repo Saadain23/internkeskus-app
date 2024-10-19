@@ -2,7 +2,7 @@
 
 from pydantic import BaseModel, HttpUrl
 from typing import Optional
-
+from bson import ObjectId
 class RecruiterProfile(BaseModel):
     user_id: str
     first_name: str
@@ -21,3 +21,4 @@ class RecruiterProfile(BaseModel):
 
     class Config:
         collection = "recruiter_profiles"
+        arbitrary_types_allowed = True 
